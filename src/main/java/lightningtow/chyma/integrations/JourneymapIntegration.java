@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Level;
 import java.util.EnumSet;
 import java.util.Objects;
 
+import static journeymap.client.api.event.ClientEvent.Type.*;
 import static lightningtow.chyma.ChymaMain.LogThis;
-import static lightningtow.chyma.ChymaMain.MOD_ID;
 
 /**
  * see <a href="https://github.com/TeamJM/journeymap-api/blob/1.20.x_1.9-fabric/src/testmod/java/example/mod/client/plugin/ExampleJourneymapPlugin.java">...</a>
@@ -32,31 +32,24 @@ public class JourneymapIntegration implements IClientPlugin
     @Override
     public void initialize(final IClientAPI jmAPI)
     {
-        // Set ClientProxy.SampleWaypointFactory with an implementation that uses the JourneyMap IClientAPI under the covers.
         this.jmAPI = jmAPI;
 
         // Subscribe to desired ClientEvent types from JourneyMap
 //        this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED, REGISTRY));
-        this.jmAPI.subscribe(getModId(), EnumSet.of(ClientEvent.Type.DISPLAY_UPDATE,
-                ClientEvent.Type.MAPPING_STARTED, ClientEvent.Type.MAPPING_STOPPED));
+        this.jmAPI.subscribe(getModId(), EnumSet.of(DISPLAY_UPDATE, MAPPING_STARTED, MAPPING_STOPPED));
 
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            try {
-                jmAPI.removeAll(MOD_ID);
-
-
-                ChymaMain.minimap_displayed = Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap)).active;
-                LogThis(Level.INFO, String.valueOf(Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap))));
-//            LogThis(Level.INFO, String.valueOf(Objects.requireNonNull(jmAPI.getUIState(Context.UI.Fullscreen))));
-//            LogThis(Level.INFO, "=========================================================");
-            }
-            catch (Exception e) { LogThis(Level.ERROR, e.getMessage() + e); }
+            var state = jmAPI.getUIState(Context.UI.Minimap);
+            ChymaMain.minimap_displayed = (state != null && state.active);
         });
 
-//        LogThis(Level.INFO,"Initialized " + getClass().getName());
-        LogThis(Level.INFO, "Successfully integrated with Journeymap");
+//                ChymaMain.minimap_displayed = Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap)).active;
+//                LogThis(Level.INFO, String.valueOf(Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap))));
 
+//            catch (Exception e) { LogThis(Level.ERROR, e.getMessage() + e); }
+
+        LogThis(Level.INFO, "Successfully integrated with Journeymap");
     }
 
 
@@ -77,10 +70,8 @@ public class JourneymapIntegration implements IClientPlugin
     {
         try
         {
-            ChymaMain.minimap_displayed = Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap)).active;
 //            if (event.type == ClientEvent.Type.DISPLAY_UPDATE) {
-//                ChymaMain.minimap_displayed = Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap)).active;
-//            }
+            ChymaMain.minimap_displayed = Objects.requireNonNull(jmAPI.getUIState(Context.UI.Minimap)).active;
 
         }
         catch (Throwable t) { LogThis(Level.ERROR, t.getMessage() + t); }

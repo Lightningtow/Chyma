@@ -3,6 +3,7 @@ package lightningtow.chyma;
 import lightningtow.chyma.integrations.CustomhudIntegration;
 import net.fabricmc.api.ClientModInitializer;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 public class ChymaMain implements ClientModInitializer
 {
@@ -12,20 +13,8 @@ public class ChymaMain implements ClientModInitializer
 	public static Boolean minimap_displayed = false;
 
 	public static void LogThis(org.apache.logging.log4j.Level lvl, String msg) {
-		org.apache.logging.log4j.Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger(MOD_DISPLAY_NAME);
 		msg = MOD_DISPLAY_NAME + " " + msg;
-
-		switch (lvl.toString()) {
-			case "INFO": LOGGER.info(msg);   break;
-			case "ERROR": LOGGER.error(msg); break;
-
-			case "FATAL": LOGGER.fatal(msg); break;
-			case "WARN": LOGGER.warn(msg);   break;
-			case "DEBUG": LOGGER.debug(msg); break;
-			case "TRACE": LOGGER.trace(msg); break;
-
-			default: msg += "(invalid Level for log message? hit default switchcase"; LOGGER.info(msg);  break;
-		}
+		LogManager.getLogger(MOD_DISPLAY_NAME).log(lvl, msg);
 	}
 
 
@@ -34,10 +23,8 @@ public class ChymaMain implements ClientModInitializer
 		// journeymap initialization happens in JourneymapIntegration. It is not referenced elsewhere to leave it as a soft dependency
 
 		try {
-//			LogThis(Level.INFO, "Beginning integration with CustomHud");
 			CustomhudIntegration.initCustomhud();
 			LogThis(Level.INFO, "Successfully integrated with CustomHud");
-
 
 		} catch (Exception e) {
 			LogThis(Level.ERROR, "Error integrating with CustomHud: " + e);
