@@ -1,0 +1,39 @@
+{
+    "schemaVersion": 1,
+    "id": "chyma",
+    "version": "1.0.0",
+    "name": "CHYMA",
+    "description": "Adds a \"is minimap displayed\" boolean to CustomHud",
+    "authors": [
+        "Lightningtow"
+    ],
+    "contact": {
+        "homepage": "https://github.com/Lightningtow/Hudify"
+    },
+    "license": "CC0-1.0",
+    "icon": "assets/chyma/icon.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "lightningtow.chyma.ChymaMain"
+        ],
+        "journeymap": [
+            "lightningtow.chyma.integrations.JourneymapIntegration"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.15.0",
+        "minecraft": "~1.20.4",
+        "java": ">=17",
+        "fabric-api": "*",
+        "custom_hud": "*"
+    },
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.discord": "https://discord.com/invite/BYSCX96fyt"
+            },
+            "update_checker": true
+        }
+    }
+}

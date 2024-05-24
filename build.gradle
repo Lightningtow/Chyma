@@ -1,0 +1,67 @@
+plugins {
+	id 'fabric-loom' version '1.6-SNAPSHOT'
+}
+//version = project.chyma_version
+group = project.maven_group
+
+base { archivesName = property("archives_base_name") }
+
+repositories {	// You should only use this when depending on other mods
+	maven {
+		url = "https://api.modrinth.com/maven"
+//		content { includeGroup "maven.modrinth" } // only needed if using forgegradle
+	}
+	maven {
+		name = "JourneyMap (Public)"
+		url = "https://jm.gserv.me/repository/maven-public/"
+	}
+	maven {
+		url "https://www.cursemaven.com"
+	}
+//	maven { url "https://maven.terraformersmc.com/releases/" }
+
+//	maven {	url = "https://api.modrinth.com/maven" }
+}
+configurations.all {
+	// Check for snapshots more frequently than Gradle's default of 1 day. 0 = every build.
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+//	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}" // { exclude module: "fabric-api" }
+
+	modImplementation files("run/mods/custom_hud-4.0.0-beta.421.20.4.jar")
+//	modImplementation "maven.modrinth:customhud:${project.customhud_version}"
+
+	modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
+	modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
+
+}
+loom {
+	runConfigs.client { ideConfigGenerated(true) }
+
+	runConfigs.server { ideConfigGenerated(false) } }
+// prevent intelliJ from auto-creating the 'Minecraft Server' run config, you can safely delete this
+
+
+processResources {}
+//processResources {
+//	inputs.property "version", project.version
+//	filesMatching("fabric.mod.json") {
+//		expand "version": project.version
+//	}
+//}
+
+tasks.withType(JavaCompile).configureEach { it.options.release = 17 }
+
+java {
+	withSourcesJar() // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17 // if it is present. If you remove this line, sources will not be generated.
+}
+
+jar { from("LICENSE") { rename { "${it}_${project.base.archivesName.get()}" }}}
