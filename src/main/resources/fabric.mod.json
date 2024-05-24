@@ -1,25 +1,19 @@
 {
     "schemaVersion": 1,
     "id": "chyma",
-    "version": "1.0.0",
+    "version": "${chyma_version}",
     "name": "CHYMA",
     "description": "Adds a \"is minimap displayed\" boolean to CustomHud",
-    "authors": [
-        "Lightningtow"
-    ],
+    "authors": [ "Lightningtow" ],
     "contact": {
-        "homepage": "https://github.com/Lightningtow/Hudify"
+        "homepage": "https://github.com/Lightningtow/Chyma"
     },
     "license": "CC0-1.0",
     "icon": "assets/chyma/icon.png",
     "environment": "client",
     "entrypoints": {
-        "client": [
-            "lightningtow.chyma.ChymaMain"
-        ],
-        "journeymap": [
-            "lightningtow.chyma.integrations.JourneymapIntegration"
-        ]
+        "client": [ "lightningtow.chyma.ChymaMain" ],
+        "journeymap": [ "lightningtow.chyma.integrations.JourneymapIntegration" ]
     },
     "depends": {
         "fabricloader": ">=0.15.0",
