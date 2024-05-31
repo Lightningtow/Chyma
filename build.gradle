@@ -1,5 +1,6 @@
 plugins { id 'fabric-loom' version '1.6-SNAPSHOT' }
-base { archivesName = property("archives_base_name") }
+base { archivesName = project.archives_base_name }
+version = project.chyma_version
 
 repositories {	// You should only use this when depending on other mods
 //	maven { url = "https://api.modrinth.com/maven" }
@@ -21,8 +22,8 @@ dependencies {
 
 	modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
 	modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
-}
-loom { runConfigs.client { ideConfigGenerated(true) } // prevent intelliJ from auto-creating the 'Minecraft Server' run config, you can safely delete this
+}  // prevent intelliJ from auto-creating the 'Minecraft Server' run config, you can safely delete this
+loom { runConfigs.client { ideConfigGenerated(true) }
 	runConfigs.server { ideConfigGenerated(false) } }
 
 tasks.withType(JavaCompile).configureEach { it.options.release = 17 }
