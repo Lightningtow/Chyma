@@ -12,6 +12,7 @@
     "icon": "assets/chyma/icon.png",
     "environment": "client",
     "entrypoints": {
+        "client": ["lightningtow.chyma.ChymaMain"],
         "journeymap": [
             "lightningtow.chyma.integrations.JourneymapIntegration"
         ]
