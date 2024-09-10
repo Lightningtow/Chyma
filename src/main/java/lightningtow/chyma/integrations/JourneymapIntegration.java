@@ -4,7 +4,6 @@ import journeymap.api.v2.client.IClientPlugin;
 import journeymap.api.v2.client.JourneyMapPlugin;
 import journeymap.api.v2.client.display.Context;
 import journeymap.api.v2.client.util.UIState;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import lightningtow.chyma.ChymaMain;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 

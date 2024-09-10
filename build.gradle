@@ -18,13 +18,19 @@ dependencies {
 
 	modImplementation "maven.modrinth:customhud:${project.customhud_version}"
 	modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api-fabric', version: project.journeymap_api_version, changing: true
-
 }  // prevent intelliJ from auto-creating the 'Minecraft Server' run config, you can safely delete this
 loom { runConfigs.client { ideConfigGenerated(true) }; runConfigs.server { ideConfigGenerated(false) } }
 
 tasks.withType(JavaCompile).configureEach { it.options.release = 21 }
 java { withSourcesJar() // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	sourceCompatibility = JavaVersion.VERSION_21; targetCompatibility = JavaVersion.VERSION_21 // if it is present. If you remove this line, sources will not be generated.
-}
+	sourceCompatibility = JavaVersion.VERSION_21;
+	targetCompatibility = JavaVersion.VERSION_21
+} // if it is present. If you remove this line, sources will not be generated.
+
 
 jar { from("LICENSE") { rename { "${it}_${project.base.archivesName.get()}" }}}
+
+
+processResources { // converts the  "version": "${version}" in the fabric.mod.json to the actual version as defined on line 3 of build.gradle
+	inputs.property "version", project.version; filesMatching("fabric.mod.json") { expand "version": project.version }
+}
